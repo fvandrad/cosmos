@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tudo Perto de Mim | Busca & Mapas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --bg-primary: #f5f5f7;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --text-main: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent: #0071e3;
+            --accent-maps: #34a853;
+            --radius-lg: 22px;
+            --radius-md: 14px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            padding-bottom: 100px;
+        }
+
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&q=80&w=1200');
+            background-size: cover;
+            background-position: center;
+            padding: 40px 16px;
+            color: #fff;
+            text-align: center;
+            border-bottom: none;
+            position: relative;
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            letter-spacing: -1.5px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            color: #fff;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, #fff 0%, #0071e3 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            width: 18px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            border-radius: var(--radius-md);
+            border: none;
+            background: rgba(255, 255, 255, 0.95);
+            font-size: 16px;
+            outline: none;
+            transition: var(--transition);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        #searchInput:focus {
+            background: #fff;
+            box-shadow: 0 15px 40px rgba(0, 113, 227, 0.2);
+        }
+
+        /* Barra de Atahos Rápidos */
+        .quick-jump-bar {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 16px 0 8px;
+            scrollbar-width: none;
+        }
+
+        .quick-jump-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .jump-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 75px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .jump-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+            backdrop-filter: blur(10px);
+            color: #fff;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .jump-btn:hover .jump-icon {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .jump-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Grid e Seções */
+        .main-container {
+            max-width: 900px;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+
+        .category-group {
+            margin-bottom: 40px;
+            scroll-margin-top: 160px;
+        }
+
+        .group-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grid-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-categories {
+                grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+                gap: 10px;
+            }
+        }
+
+        /* Card Modernizado com Imagem */
+        .category-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.95) 70%);
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            border-color: var(--accent);
+        }
+
+        .category-card:hover::before {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.9) 100%);
+        }
+
+        /* Link Principal (Pesquisa) */
+        .card-main-link {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 10px;
+            text-decoration: none;
+            color: inherit;
+            z-index: 1;
+            position: relative;
+        }
+
+        .icon-wrapper {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Temas de Cores (Apenas para o ícone agora) */
+        .group-saude .card-main-link i {
+            color: #e11d48;
+        }
+
+        .group-alim .card-main-link i {
+            color: #ea580c;
+        }
+
+        .group-serv .card-main-link i {
+            color: #7c3aed;
+        }
+
+        .group-trans .card-main-link i {
+            color: #475569;
+        }
+
+        .group-pet .card-main-link i {
+            color: #db2777;
+        }
+
+        .group-auto .card-main-link i {
+            color: #0284c7;
+        }
+
+        .group-tech .card-main-link i {
+            color: #059669;
+        }
+
+        .group-educ .card-main-link i {
+            color: #1d4ed8;
+        }
+
+        .group-casa .card-main-link i {
+            color: #ca8a04;
+        }
+
+        .group-lazer .card-main-link i {
+            color: #d97706;
+        }
+
+        .group-pess .card-main-link i {
+            color: #9333ea;
+        }
+
+        .group-comu .card-main-link i {
+            color: #0891b2;
+        }
+
+        .category-card:hover .icon-wrapper {
+            background: var(--accent) !important;
+            transform: scale(1.1);
+        }
+
+        .category-card:hover .icon-wrapper i {
+            color: #fff !important;
+        }
+
+        .category-name {
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--text-main);
+            text-align: center;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Botão do Mapa (Ação Secundária) */
+        .card-maps-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 34px;
+            height: 34px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-maps);
+            text-decoration: none;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            z-index: 2;
+            transition: var(--transition);
+        }
+
+        .card-maps-btn:hover {
+            background: var(--accent-maps);
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Botões Flutuantes UI */
+        .nav-controls {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 2000;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .nav-btn:hover {
+            background: #fff;
+            transform: scale(1.1);
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 11px;
+            padding: 40px 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-content">
+            <h1>Tudo <span>Perto de Mim</span></h1>
+            <div class="search-container">
+                <i data-lucide="search"></i>
+                <input type="text" id="searchInput" placeholder="Buscar serviços ou estabelecimentos..."
+                    autocomplete="off">
+            </div>
+            <div class="quick-jump-bar" id="quickJump"></div>
+        </div>
+    </header>
+
+    <main class="main-container" id="mainContent"></main>
+
+    <div id="noResults" class="hidden" style="text-align: center; padding: 80px 20px; color: var(--text-secondary);">
+        <i data-lucide="search-x" style="width: 48px; height: 48px; margin-bottom: 16px; opacity: 0.3;"></i>
+        <p>Não encontramos o que você precisa.</p>
+    </div>
+
+    <div class="nav-controls">
+        <button class="nav-btn" onclick="scrollToSection('prev')" title="Subir"><i
+                data-lucide="chevron-up"></i></button>
+        <button class="nav-btn" onclick="scrollToSection('next')" title="Descer"><i
+                data-lucide="chevron-down"></i></button>
+    </div>
+
+    <footer>
+        <p>Google Search & Google Maps integrados • Projeto Cosmos 2026</p>
+    </footer>
+
+    <script>
+        const i18n = {
+            pt: {
+                title: "Tudo <span>Perto de Mim</span>",
+                searchPlaceholder: "Buscar serviços ou estabelecimentos...",
+                noResults: "Não encontramos o que você precisa.",
+                suffix: " perto de mim",
+                footer: "Google Search & Google Maps integrados • Projeto Cosmos 2026"
+            },
+            en: {
+                title: "Everything <span>Near Me</span>",
+                searchPlaceholder: "Search services or establishments...",
+                noResults: "We couldn't find what you need.",
+                suffix: " near me",
+                footer: "Google Search & Google Maps integrated • Cosmos Project 2026"
+            },
+            es: {
+                title: "Todo <span>Cerca de Mí</span>",
+                searchPlaceholder: "Buscar servicios o establecimientos...",
+                noResults: "No encontramos lo que necesitas.",
+                suffix: " cerca de mí",
+                footer: "Google Search & Google Maps integrados • Proyecto Cosmos 2026"
+            }
+        };
+
+        const categoryData = [
+            {
+                id: "saude", icon: "heart", class: "group-saude",
+                labels: { pt: "Saúde & Emergência", en: "Health & Emergency", es: "Salud y Emergencia" },
+                items: [
+                    { name: { pt: "Farmácia", en: "Pharmacy", es: "Farmacia" }, icon: "pill", q: { pt: "Farmácia", en: "Pharmacy", es: "Farmacia" } },
+                    { name: { pt: "Hospital", en: "Hospital", es: "Hospital" }, icon: "hospital", q: { pt: "Hospital", en: "Hospital", es: "Hospital" } },
+                    { name: { pt: "Posto de Saúde", en: "Health Center", es: "Centro de Salud" }, icon: "stethoscope", q: { pt: "Posto de Saúde", en: "Health Center", es: "Centro de Salud" } },
+                    { name: { pt: "Dentista", en: "Dentist", es: "Dentista" }, icon: "activity", q: { pt: "Dentista", en: "Dentist", es: "Dentista" } },
+                    { name: { pt: "Academia", en: "Gym", es: "Gimnasio" }, icon: "dumbbell", q: { pt: "Academia", en: "Gym", es: "Gimnasio" } },
+                    { name: { pt: "Clínica Médica", en: "Medical Clinic", es: "Clínica Médica" }, icon: "user-round", q: { pt: "Clínica Médica", en: "Medical Clinic", es: "Clínica Médica" } },
+                    { name: { pt: "Urgência 24h", en: "Emergency 24h", es: "Urgencias 24h" }, icon: "ambulance", q: { pt: "Pronto Socorro 24h", en: "24h Emergency Room", es: "Urgencias 24h" } }
+                ]
+            },
+            {
+                id: "alim", icon: "utensils", class: "group-alim",
+                labels: { pt: "Alimentação", en: "Food & Drinks", es: "Alimentación" },
+                items: [
+                    { name: { pt: "Padaria", en: "Bakery", es: "Panadería" }, icon: "coffee", q: { pt: "Padaria", en: "Bakery", es: "Panadería" } },
+                    { name: { pt: "Mercado", en: "Market", es: "Mercado" }, icon: "shopping-cart", q: { pt: "Supermercado", en: "Supermarket", es: "Supermercado" } },
+                    { name: { pt: "Restaurante", en: "Restaurant", es: "Restaurante" }, icon: "utensils", q: { pt: "Restaurante", en: "Restaurant", es: "Restaurante" } },
+                    { name: { pt: "Pizzaria", en: "Pizzeria", es: "Pizzería" }, icon: "pizza", q: { pt: "Pizzaria", en: "Pizzeria", es: "Pizzería" } },
+                    { name: { pt: "Lanchonete", en: "Snack Bar", es: "Cafetería" }, icon: "sandwich", q: { pt: "Lanchonete", en: "Diner", es: "Snack-bar" } },
+                    { name: { pt: "Açougue", en: "Butcher Shop", es: "Carnicería" }, icon: "beef", q: { pt: "Açougue", en: "Butcher Shop", es: "Carnicería" } },
+                    { name: { pt: "Distribuidora", en: "Liquor Store", es: "Distribuidora" }, icon: "beer", q: { pt: "Distribuidora de Bebidas", en: "Liquor Store", es: "Distribuidora de bebidas" } }
+                ]
+            },
+            {
+                id: "serv", icon: "scale", class: "group-serv",
+                labels: { pt: "Serviços & Jurídico", en: "Services & Legal", es: "Servicios y Jurídico" },
+                items: [
+                    { name: { pt: "Banco", en: "Bank", es: "Banco" }, icon: "landmark", q: { pt: "Banco 24h", en: "Bank ATM", es: "Banco 24h" } },
+                    { name: { pt: "Correios", en: "Post Office", es: "Correos" }, icon: "mail", q: { pt: "Correios", en: "Post Office", es: "Oficina de correos" } },
+                    { name: { pt: "Lotérica", en: "Lottery", es: "Lotería" }, icon: "clover", q: { pt: "Lotérica", en: "Lottery Shop", es: "Lotería" } },
+                    { name: { pt: "Advogado", en: "Lawyer", es: "Abogado" }, icon: "scale", q: { pt: "Escritório de Advocacia", en: "Law Firm", es: "Despacho de abogados" } },
+                    { name: { pt: "Cartório", en: "Notary", es: "Notaría" }, icon: "file-signature", q: { pt: "Cartório", en: "Notary Public", es: "Notaría" } },
+                    { name: { pt: "Chaveiro", en: "Locksmith", es: "Cerrajero" }, icon: "key", q: { pt: "Chaveiro", en: "Locksmith", es: "Cerrajero" } }
+                ]
+            },
+            {
+                id: "lazer", icon: "palmtree", class: "group-lazer",
+                labels: { pt: "Turismo, Lazer & Compras", en: "Tourism, Leisure & Shopping", es: "Turismo, Ocio y Compras" },
+                items: [
+                    { name: { pt: "Shopping", en: "Mall", es: "Centro Comercial" }, icon: "shopping-bag", q: { pt: "Shopping Center", en: "Shopping Mall", es: "Centro comercial" } },
+                    { name: { pt: "Outlet", en: "Outlet", es: "Outlet" }, icon: "tag", q: { pt: "Outlet", en: "Outlet store", es: "Tienda outlet" } },
+                    { name: { pt: "Galeria", en: "Gallery", es: "Galería" }, icon: "layout-grid", q: { pt: "Galeria Comercial", en: "Shopping Gallery", es: "Galería comercial" } },
+                    { name: { pt: "Hotel", en: "Hotel", es: "Hotel" }, icon: "hotel", q: { pt: "Hotel", en: "Hotel", es: "Hotel" } },
+                    { name: { pt: "Agência", en: "Travel Agency", es: "Agencia" }, icon: "palmtree", q: { pt: "Agência de Viagens", en: "Travel Agency", es: "Agencia de viajes" } },
+                    { name: { pt: "Cinema", en: "Cinema", es: "Cine" }, icon: "film", q: { pt: "Cinema", en: "Movie theater", es: "Cine" } },
+                    { name: { pt: "Teatro", en: "Theater", es: "Teatro" }, icon: "ticket", q: { pt: "Teatro", en: "Theater", es: "Teatro" } },
+                    { name: { pt: "Parque", en: "Park", es: "Parque" }, icon: "trees", q: { pt: "Parque", en: "Public park", es: "Parque" } }
+                ]
+            },
+            {
+                id: "trans", icon: "bus", class: "group-trans",
+                labels: { pt: "Transporte & Logística", en: "Transport & Logistics", es: "Transporte y Logística" },
+                items: [
+                    { name: { pt: "Ônibus", en: "Bus", es: "Autobús" }, icon: "bus", q: { pt: "Ponto de Ônibus", en: "Bus Stop", es: "Parada de autobús" } },
+                    { name: { pt: "Estacionamento", en: "Parking", es: "Parking" }, icon: "parking-circle", q: { pt: "Estacionamento", en: "Parking Lot", es: "Aparcamiento" } },
+                    { name: { pt: "Posto Gas", en: "Gas Station", es: "Gasolinera" }, icon: "fuel", q: { pt: "Posto de Combustível", en: "Gas Station", es: "Gasolinera" } },
+                    { name: { pt: "Táxi / Uber", en: "Taxi / Uber", es: "Taxi / Uber" }, icon: "car", q: { pt: "Ponto de Táxi", en: "Taxi Stand", es: "Parada de taxis" } },
+                    { name: { pt: "Carga", en: "Freight", es: "Carga" }, icon: "truck", q: { pt: "Transportadora", en: "Shipping Company", es: "Empresa de transporte" } }
+                ]
+            },
+            {
+                id: "pet", icon: "dog", class: "group-pet",
+                labels: { pt: "Mundo Pet & Agro", en: "Pet & Agro World", es: "Mundo Pet y Agro" },
+                items: [
+                    { name: { pt: "Veterinário", en: "Vet", es: "Veterinario" }, icon: "heart-pulse", q: { pt: "Clínica Veterinária", en: "Veterinary Clinic", es: "Clínica veterinaria" } },
+                    { name: { pt: "Pet Shop", en: "Pet Shop", es: "Pet Shop" }, icon: "shopping-bag", q: { pt: "Pet Shop", en: "Pet Shop", es: "Tienda de mascotas" } },
+                    { name: { pt: "Agropecuária", en: "Agro Store", es: "Agropecuaria" }, icon: "wheat", q: { pt: "Agropecuária", en: "Agriculture Store", es: "Tienda agropecuaria" } },
+                    { name: { pt: "Rações", en: "Pet Food", es: "Piensos" }, icon: "dog", q: { pt: "Casa de Rações", en: "Pet Food Store", es: "Tienda de alimentos para mascotas" } },
+                    { name: { pt: "Banho/Tosa", en: "Grooming", es: "Peluquería" }, icon: "bath", q: { pt: "Banho e Tosa", en: "Pet Grooming", es: "Peluquería canina" } }
+                ]
+            },
+            {
+                id: "auto", icon: "car-front", class: "group-auto",
+                labels: { pt: "Automotivo", en: "Automotive", es: "Automotriz" },
+                items: [
+                    { name: { pt: "Oficina", en: "Repair Shop", es: "Taller" }, icon: "settings", q: { pt: "Oficina Mecânica", en: "Auto Repair Shop", es: "Taller mecánico" } },
+                    { name: { pt: "Auto Center", en: "Auto Center", es: "Auto Center" }, icon: "wrench", q: { pt: "Auto Center", en: "Auto Center", es: "Centro automotriz" } },
+                    { name: { pt: "Auto Peças", en: "Auto Parts", es: "Repuestos" }, icon: "package", q: { pt: "Loja de Auto Peças", en: "Auto Parts Store", es: "Tienda de repuestos" } },
+                    { name: { pt: "Borracharia", en: "Tire Shop", es: "Vulcanizadora" }, icon: "car-front", q: { pt: "Borracharia", en: "Tire Repair Shop", es: "Taller de neumáticos" } },
+                    { name: { pt: "Auto Elétrica", en: "Auto Electric", es: "Auto Eléctrica" }, icon: "zap", q: { pt: "Auto Elétrica", en: "Auto Electrician", es: "Electricista automotriz" } },
+                    { name: { pt: "Auto Vidros", en: "Auto Glass", es: "Lunas" }, icon: "scan", q: { pt: "Loja de Auto Vidros", en: "Auto Glass Shop", es: "Taller de lunas" } },
+                    { name: { pt: "Funilaria", en: "Body Shop", es: "Chapa y Pintura" }, icon: "hammer", q: { pt: "Oficina de Funilaria e Pintura", en: "Body and Paint Shop", es: "Taller de chapa y pintura" } },
+                    { name: { pt: "Som & Acess.", en: "Car Audio", es: "Sonido y Acc." }, icon: "speaker", q: { pt: "Loja de Som e Acessórios Automotivos", en: "Car Audio Shop", es: "Tienda de sonido para coches" } },
+                    { name: { pt: "Baterias", en: "Batteries", es: "Baterías" }, icon: "battery-charging", q: { pt: "Loja de Baterias Automotivas", en: "Car Battery Shop", es: "Tienda de baterías" } }
+                ]
+            },
+            {
+                id: "tec", icon: "cpu", class: "group-tech",
+                labels: { pt: "Tecnologia", en: "Technology", es: "Tecnología" },
+                items: [
+                    { name: { pt: "Loja Celular", en: "Phone Store", es: "Móviles" }, icon: "smartphone", q: { pt: "Loja de Celular", en: "Phone Store", es: "Tienda de móviles" } },
+                    { name: { pt: "Informática", en: "IT Store", es: "Informática" }, icon: "monitor", q: { pt: "Loja de Informática", en: "Computer Store", es: "Tienda de informática" } },
+                    { name: { pt: "Assistência", en: "Tech Support", es: "Soporte" }, icon: "wrench", q: { pt: "Assistência Técnica Informática", en: "IT Support Service", es: "Soporte técnico" } },
+                    { name: { pt: "Eletro", en: "Electronics", es: "Electrónica" }, icon: "tv", q: { pt: "Loja de Eletrônicos", en: "Electronics Store", es: "Tienda de electrónica" } },
+                    { name: { pt: "Games", en: "Games", es: "Videojuegos" }, icon: "gamepad-2", q: { pt: "Loja de Games", en: "Video Game Store", es: "Tienda de videojuegos" } }
+                ]
+            },
+            {
+                id: "educ", icon: "graduation-cap", class: "group-educ",
+                labels: { pt: "Educação", en: "Education", es: "Educación" },
+                items: [
+                    { name: { pt: "Escola", en: "School", es: "Escuela" }, icon: "school", q: { pt: "Escola", en: "School", es: "Escuela" } },
+                    { name: { pt: "Faculdade", en: "University", es: "Facultad" }, icon: "university", q: { pt: "Faculdade", en: "University", es: "Universidad" } },
+                    { name: { pt: "Idiomas", en: "Languages", es: "Idiomas" }, icon: "languages", q: { pt: "Curso de Idiomas", en: "Language School", es: "Escuela de idiomas" } },
+                    { name: { pt: "Técnico", en: "Technical", es: "Técnico" }, icon: "graduation-cap", q: { pt: "Curso Técnico", en: "Technical Course", es: "Curso técnico" } }
+                ]
+            },
+            {
+                id: "casa", icon: "home", class: "group-casa",
+                labels: { pt: "Casa & Reforma", en: "Home & Renovation", es: "Hogar y Reforma" },
+                items: [
+                    { name: { pt: "Móveis", en: "Furniture", es: "Muebles" }, icon: "armchair", q: { pt: "Loja de Móveis", en: "Furniture Store", es: "Tienda de muebles" } },
+                    { name: { pt: "Ferragens", en: "Hardware", es: "Ferretería" }, icon: "hammer", q: { pt: "Ferragens", en: "Hardware Store", es: "Ferretería" } },
+                    { name: { pt: "Construção", en: "Construction", es: "Construcción" }, icon: "blocks", q: { pt: "Material de Construção", en: "Construction Supply", es: "Materiales de construcción" } },
+                    { name: { pt: "Imobiliária", en: "Real Estate", es: "Inmobiliaria" }, icon: "building-2", q: { pt: "Imobiliária", en: "Real Estate Agency", es: "Agencia inmobiliaria" } },
+                    { name: { pt: "Tintas", en: "Paint", es: "Pinturas" }, icon: "paint-bucket", q: { pt: "Loja de Tintas", en: "Paint Store", es: "Tienda de pinturas" } }
+                ]
+            },
+            {
+                id: "beleza", icon: "sparkles", class: "group-pess",
+                labels: { pt: "Cuidados Pessoais", en: "Personal Care", es: "Cuidado Personal" },
+                items: [
+                    { name: { pt: "Barbearia", en: "Barbershop", es: "Barbería" }, icon: "scissors", q: { pt: "Barbearia", en: "Barbershop", es: "Barbería" } },
+                    { name: { pt: "Salão", en: "Beauty Salon", es: "Salón" }, icon: "sparkles", q: { pt: "Salão de Beleza", en: "Beauty Salon", es: "Salón de belleza" } },
+                    { name: { pt: "Esmalteria", en: "Nail Salon", es: "Uñas" }, icon: "brush", q: { pt: "Esmalteria", en: "Nail Salon", es: "Salón de uñas" } },
+                    { name: { pt: "Estética", en: "Esthetics", es: "Estética" }, icon: "wand-2", q: { pt: "Clínica de Estética", en: "Esthetics Clinic", es: "Clínica de estética" } }
+                ]
+            },
+            {
+                id: "comu", icon: "users", class: "group-comu",
+                labels: { pt: "Comunidade & Fé", en: "Community & Faith", es: "Comunidad y Fe" },
+                items: [
+                    { name: { pt: "Igreja", en: "Church", es: "Iglesia" }, icon: "church", q: { pt: "Igreja", en: "Church", es: "Iglesia" } },
+                    { name: { pt: "Templo", en: "Temple", es: "Templo" }, icon: "landmark", q: { pt: "Templo", en: "Temple", es: "Templo" } },
+                    { name: { pt: "Igreja Católica", en: "Catholic Church", es: "Iglesia Católica" }, icon: "cross", q: { pt: "Igreja Católica", en: "Catholic Church", es: "Iglesia Católica" } },
+                    { name: { pt: "Igreja Evang.", en: "Evangelical Church", es: "Iglesia Evangélica" }, icon: "music", q: { pt: "Igreja Evangélica", en: "Evangelical Church", es: "Iglesia Evangélica" } },
+                    { name: { pt: "Centro Espírita", en: "Spiritist Center", es: "Centro Espírita" }, icon: "sun", q: { pt: "Centro Espírita", en: "Spiritist Center", es: "Centro Espírita" } },
+                    { name: { pt: "Comunidade", en: "Community Center", es: "Centro Comunitario" }, icon: "users-2", q: { pt: "Centro Comunitário", en: "Community Center", es: "Centro comunitario" } }
+                ]
+            }
+        ];
+
+        let currentLang = 'pt';
+
+        function getLanguage() {
+            const userLang = navigator.language || navigator.userLanguage;
+            if (userLang.startsWith('en')) return 'en';
+            if (userLang.startsWith('es')) return 'es';
+            return 'pt';
+        }
+
+        function renderAll() {
+            currentLang = getLanguage();
+            const lang = i18n[currentLang];
+
+            // Atualizar UI
+            document.title = lang.title.replace('<span>', '').replace('</span>', '');
+            document.querySelector('h1').innerHTML = lang.title;
+            document.getElementById('searchInput').placeholder = lang.searchPlaceholder;
+            document.querySelector('#noResults p').innerText = lang.noResults;
+            document.querySelector('footer p').innerText = lang.footer;
+
+            const main = document.getElementById('mainContent');
+            const jump = document.getElementById('quickJump');
+
+            jump.innerHTML = categoryData.map(g => `
+                <button class="jump-btn" onclick="document.getElementById('${g.id}').scrollIntoView({behavior:'smooth'})">
+                    <div class="jump-icon"><i data-lucide="${g.icon}"></i></div>
+                    <span class="jump-label">${g.labels[currentLang].split(' ')[0]}</span>
+                </button>
+            `).join('');
+
+            main.innerHTML = categoryData.map(g => `
+                <section class="category-group ${g.class}" id="${g.id}">
+                    <h2 class="group-title"><i data-lucide="${g.icon}" style="width:16px"></i>${g.labels[currentLang]}</h2>
+                    <div class="grid-categories">
+                        ${g.items.map(item => {
+                const searchQuery = encodeURIComponent(item.q[currentLang] + lang.suffix);
+                const googleLink = `https://www.google.com/search?q=${searchQuery}`;
+                const mapsLink = `https://www.google.com/maps/search/${searchQuery}`;
+
+                return `
+                            <div class="category-card" data-search="${item.name[currentLang].toLowerCase()}" 
+                                 style="background-image: url('https://images.unsplash.com/photo-${getImgId(item.q.en)}?auto=format&fit=crop&q=60&w=300')">
+                                <!-- Botão Secundário para Pesquisa no Google -->
+                                <a href="${googleLink}" target="_blank" class="card-maps-btn" title="Buscar no Google">
+                                    <i data-lucide="search"></i>
+                                </a>
+                                <!-- Link Principal para Google Maps -->
+                                <a href="${mapsLink}" target="_blank" class="card-main-link">
+                                    <div class="icon-wrapper"><i data-lucide="${item.icon}"></i></div>
+                                    <span class="category-name">${item.name[currentLang]}</span>
+                                </a>
+                            </div>
+                            `;
+            }).join('')}
+                    </div>
+                </section>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function getImgId(query) {
+            const ids = {
+                'Pharmacy': '1585435062873-1f2969de1f53',
+                'Hospital': '1519494140681-8b17d8121f45',
+                'Health Center': '1516549655169-df83a0774514',
+                'Dentist': '1606811841689-23dfddce2e95',
+                'Gym': '15344383272d6-411f12253ef3',
+                'Medical Clinic': '1519494091449-5989d673bc55',
+                '24h Emergency Room': '1586773860418-d339d1c750b2',
+                'Bakery': '1509440159596-0249088772ff',
+                'Supermarket': '1542838132-92c53300491e',
+                'Restaurant': '1517248135467-4c7edcad34c4',
+                'Pizzeria': '1513104890138-7c749659a591',
+                'Diner': '1467453272184-d1c71f820d71',
+                'Butcher Shop': '1602491453631-e2a5ad90a003',
+                'Liquor Store': '1510812431401-41d2bd2722f3',
+                'Bank ATM': '1569025690766-4a008c3819b1',
+                'Post Office': '1566835069720-61877402662c',
+                'Lottery Shop': '1614064506894-6d9b04870020',
+                'Law Firm': '1589829085444-42c8dd96f81b',
+                'Notary Public': '1505663912287-f23594cd3983',
+                'Locksmith': '1587574293836-7476839353ec',
+                'Shopping Mall': '1567401804135-2436dca061dc',
+                'Outlet store': '1441984904033-2ed9efd7ae31',
+                'Shopping Gallery': '1481437642641-3f121dfbfee1',
+                'Hotel': '1566073771279-6372540d8360',
+                'Travel Agency': '1436491865333-57c30cec9928',
+                'Movie theater': '14895991122aa-7181fcd9098e',
+                'Theater': '1513106593422-834bc104fa23',
+                'Public park': '1519331378117-0c07c72f1af3',
+                'Bus Stop': '1544620347-c0fd35a7334e',
+                'Parking Lot': '1470770903674-8914016339aa',
+                'Gas Station': '1527010150244-64e43dfe7d3f',
+                'Taxi Stand': '1490653311019-ecbd114296ca',
+                'Shipping Company': '1586528116311-db99ec93532f',
+                'Veterinary Clinic': '1606425271317-0efc0294c63f',
+                'Pet Shop': '1516734212104-12932782ca74',
+                'Agriculture Store': '1500382017326-7781ee00ca32',
+                'Pet Food Store': '1583511655913-3561337b8fd2',
+                'Pet Grooming': '1516734212104-12932782ca74',
+                'Auto Repair Shop': '1486269550731-f928e30b80df',
+                'Auto Center': '1554225722-daec540be6d3',
+                'Auto Parts Store': '1598300188055-30fd63004a43',
+                'Tire Repair Shop': '1540061384033-4f96d66e5f14',
+                'Auto Electrician': '1581094771184-dfbf7eeb9983',
+                'Auto Glass Shop': '1605153322055-f7d0620711cc',
+                'Body and Paint Shop': '1599256621779-2af4139cf06b',
+                'Car Audio Shop': '1616422285624-0735e5140dac',
+                'Car Battery Shop': '1544654311-408922579b29',
+                'Phone Store': '1511700994444-23ee332df26c',
+                'Computer Store': '1591799298444-0a8178824d8b',
+                'IT Support Service': '1581094771184-dfbf7eeb9983',
+                'Electronics Store': '1550009158-bc30e9223acc',
+                'Video Game Store': '1493711662056-b042a2d3cbaf',
+                'School': '1503673019035-afef2ac73d4d',
+                'University': '1541339946-ff6269d78a84',
+                'Language School': '1456518563068-151216a8c3d0',
+                'Technical Course': '1581094771184-dfbf7eeb9983',
+                'Furniture Store': '1524758658ed5-2a3a920977c3',
+                'Hardware Store': '1530124395689-0262a9307262',
+                'Construction Supply': '1504917595213-d62199ac6104',
+                'Real Estate Agency': '1560518883-ce09059ee7fa',
+                'Paint Store': '1589939703632-45e0468af6fa',
+                'Barbershop': '1503951914875-452162a0f8bf',
+                'Beauty Salon': '1520194100-282402e9d520',
+                'Nail Salon': '1519014816159-95286a0344d9',
+                'Esthetics Clinic': '1512290923412-eb30a240c60b',
+                'Church': '1448375535560-6c9f6f60c5a2',
+                'Temple': '1545153997-ec59a721bd79',
+                'Catholic Church': '1531749668029-2db88e4276c7',
+                'Evangelical Church': '1515162305285-0293e4767cc2',
+                'Spiritist Center': '1506126613408-eca07ce68773',
+                'Community Center': '1517486808442-7efc464e837f'
+            };
+            return ids[query] || '1449824913935-59a10b8d2000';
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.category-card');
+            const groups = document.querySelectorAll('.category-group');
+            let foundCount = 0;
+
+            cards.forEach(card => {
+                const isMatch = card.getAttribute('data-search').includes(term);
+                card.classList.toggle('hidden', !isMatch);
+                if (isMatch) foundCount++;
+            });
+
+            groups.forEach(group => {
+                const hasVisible = group.querySelectorAll('.category-card:not(.hidden)').length > 0;
+                group.classList.toggle('hidden', !hasVisible);
+            });
+
+            document.getElementById('noResults').classList.toggle('hidden', foundCount > 0);
+            document.getElementById('quickJump').classList.toggle('hidden', term.length > 0);
+        });
+
+        let currentIdx = -1;
+        function scrollToSection(dir) {
+            const activeGroups = Array.from(document.querySelectorAll('.category-group:not(.hidden)'));
+            if (activeGroups.length === 0) return;
+            if (dir === 'next') currentIdx = (currentIdx + 1) % activeGroups.length;
+            else currentIdx = (currentIdx - 1 + activeGroups.length) % activeGroups.length;
+            const offset = document.querySelector('header').offsetHeight + 10;
+            window.scrollTo({ top: activeGroups[currentIdx].offsetTop - offset, behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderAll);
+    </script>
+</body>
+
+</html>
