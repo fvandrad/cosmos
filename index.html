@@ -183,15 +183,38 @@
         }
 
         .grid-categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            display: flex;
+            overflow-x: auto;
             gap: 12px;
+            padding: 8px 0 16px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .grid-categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-card {
+            min-width: 140px;
+            max-width: 140px;
+            background: #fff;
+            border-radius: var(--radius-lg);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            flex-shrink: 0;
         }
 
         @media (max-width: 600px) {
-            .grid-categories {
-                grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
-                gap: 10px;
+            .category-card {
+                min-width: 120px;
+                max-width: 120px;
             }
         }
 
@@ -442,12 +465,12 @@
                 id: "saude", icon: "heart", class: "group-saude",
                 labels: { pt: "Saúde & Emergência", en: "Health & Emergency", es: "Salud y Emergencia" },
                 items: [
+                    { name: { pt: "Academia", en: "Gym", es: "Gimnasio" }, icon: "dumbbell", q: { pt: "Academia", en: "Gym", es: "Gimnasio" } },
+                    { name: { pt: "Clínica Médica", en: "Medical Clinic", es: "Clínica Médica" }, icon: "user-round", q: { pt: "Clínica Médica", en: "Medical Clinic", es: "Clínica Médica" } },
+                    { name: { pt: "Dentista", en: "Dentist", es: "Dentista" }, icon: "activity", q: { pt: "Dentista", en: "Dentist", es: "Dentista" } },
                     { name: { pt: "Farmácia", en: "Pharmacy", es: "Farmacia" }, icon: "pill", q: { pt: "Farmácia", en: "Pharmacy", es: "Farmacia" } },
                     { name: { pt: "Hospital", en: "Hospital", es: "Hospital" }, icon: "hospital", q: { pt: "Hospital", en: "Hospital", es: "Hospital" } },
                     { name: { pt: "Posto de Saúde", en: "Health Center", es: "Centro de Salud" }, icon: "stethoscope", q: { pt: "Posto de Saúde", en: "Health Center", es: "Centro de Salud" } },
-                    { name: { pt: "Dentista", en: "Dentist", es: "Dentista" }, icon: "activity", q: { pt: "Dentista", en: "Dentist", es: "Dentista" } },
-                    { name: { pt: "Academia", en: "Gym", es: "Gimnasio" }, icon: "dumbbell", q: { pt: "Academia", en: "Gym", es: "Gimnasio" } },
-                    { name: { pt: "Clínica Médica", en: "Medical Clinic", es: "Clínica Médica" }, icon: "user-round", q: { pt: "Clínica Médica", en: "Medical Clinic", es: "Clínica Médica" } },
                     { name: { pt: "Urgência 24h", en: "Emergency 24h", es: "Urgencias 24h" }, icon: "ambulance", q: { pt: "Pronto Socorro 24h", en: "24h Emergency Room", es: "Urgencias 24h" } }
                 ]
             },
@@ -455,91 +478,95 @@
                 id: "alim", icon: "utensils", class: "group-alim",
                 labels: { pt: "Alimentação", en: "Food & Drinks", es: "Alimentación" },
                 items: [
-                    { name: { pt: "Padaria", en: "Bakery", es: "Panadería" }, icon: "coffee", q: { pt: "Padaria", en: "Bakery", es: "Panadería" } },
-                    { name: { pt: "Mercado", en: "Market", es: "Mercado" }, icon: "shopping-cart", q: { pt: "Supermercado", en: "Supermarket", es: "Supermercado" } },
-                    { name: { pt: "Restaurante", en: "Restaurant", es: "Restaurante" }, icon: "utensils", q: { pt: "Restaurante", en: "Restaurant", es: "Restaurante" } },
-                    { name: { pt: "Pizzaria", en: "Pizzeria", es: "Pizzería" }, icon: "pizza", q: { pt: "Pizzaria", en: "Pizzeria", es: "Pizzería" } },
-                    { name: { pt: "Lanchonete", en: "Snack Bar", es: "Cafetería" }, icon: "sandwich", q: { pt: "Lanchonete", en: "Diner", es: "Snack-bar" } },
                     { name: { pt: "Açougue", en: "Butcher Shop", es: "Carnicería" }, icon: "beef", q: { pt: "Açougue", en: "Butcher Shop", es: "Carnicería" } },
-                    { name: { pt: "Distribuidora", en: "Liquor Store", es: "Distribuidora" }, icon: "beer", q: { pt: "Distribuidora de Bebidas", en: "Liquor Store", es: "Distribuidora de bebidas" } }
+                    { name: { pt: "Distribuidora", en: "Liquor Store", es: "Distribuidora" }, icon: "beer", q: { pt: "Distribuidora de Bebidas", en: "Liquor Store", es: "Distribuidora de bebidas" } },
+                    { name: { pt: "Lanchonete", en: "Snack Bar", es: "Cafetería" }, icon: "sandwich", q: { pt: "Lanchonete", en: "Diner", es: "Snack-bar" } },
+                    { name: { pt: "Mercado", en: "Market", es: "Mercado" }, icon: "shopping-cart", q: { pt: "Supermercado", en: "Supermarket", es: "Supermercado" } },
+                    { name: { pt: "Padaria", en: "Bakery", es: "Panadería" }, icon: "coffee", q: { pt: "Padaria", en: "Bakery", es: "Panadería" } },
+                    { name: { pt: "Pizzaria", en: "Pizzeria", es: "Pizzería" }, icon: "pizza", q: { pt: "Pizzaria", en: "Pizzeria", es: "Pizzería" } },
+                    { name: { pt: "Restaurante", en: "Restaurant", es: "Restaurante" }, icon: "utensils", q: { pt: "Restaurante", en: "Restaurant", es: "Restaurante" } }
                 ]
             },
             {
                 id: "serv", icon: "scale", class: "group-serv",
                 labels: { pt: "Serviços & Jurídico", en: "Services & Legal", es: "Servicios y Jurídico" },
                 items: [
-                    { name: { pt: "Banco", en: "Bank", es: "Banco" }, icon: "landmark", q: { pt: "Banco 24h", en: "Bank ATM", es: "Banco 24h" } },
-                    { name: { pt: "Correios", en: "Post Office", es: "Correos" }, icon: "mail", q: { pt: "Correios", en: "Post Office", es: "Oficina de correos" } },
-                    { name: { pt: "Lotérica", en: "Lottery", es: "Lotería" }, icon: "clover", q: { pt: "Lotérica", en: "Lottery Shop", es: "Lotería" } },
                     { name: { pt: "Advogado", en: "Lawyer", es: "Abogado" }, icon: "scale", q: { pt: "Escritório de Advocacia", en: "Law Firm", es: "Despacho de abogados" } },
+                    { name: { pt: "Banco", en: "Bank", es: "Banco" }, icon: "landmark", q: { pt: "Banco 24h", en: "Bank ATM", es: "Banco 24h" } },
                     { name: { pt: "Cartório", en: "Notary", es: "Notaría" }, icon: "file-signature", q: { pt: "Cartório", en: "Notary Public", es: "Notaría" } },
-                    { name: { pt: "Chaveiro", en: "Locksmith", es: "Cerrajero" }, icon: "key", q: { pt: "Chaveiro", en: "Locksmith", es: "Cerrajero" } }
+                    { name: { pt: "Chaveiro", en: "Locksmith", es: "Cerrajero" }, icon: "key", q: { pt: "Chaveiro", en: "Locksmith", es: "Cerrajero" } },
+                    { name: { pt: "Correios", en: "Post Office", es: "Correos" }, icon: "mail", q: { pt: "Correios", en: "Post Office", es: "Oficina de correos" } },
+                    { name: { pt: "Lotérica", en: "Lottery", es: "Lotería" }, icon: "clover", q: { pt: "Lotérica", en: "Lottery Shop", es: "Lotería" } }
                 ]
             },
             {
                 id: "lazer", icon: "palmtree", class: "group-lazer",
                 labels: { pt: "Turismo, Lazer & Compras", en: "Tourism, Leisure & Shopping", es: "Turismo, Ocio y Compras" },
                 items: [
-                    { name: { pt: "Shopping", en: "Mall", es: "Centro Comercial" }, icon: "shopping-bag", q: { pt: "Shopping Center", en: "Shopping Mall", es: "Centro comercial" } },
-                    { name: { pt: "Outlet", en: "Outlet", es: "Outlet" }, icon: "tag", q: { pt: "Outlet", en: "Outlet store", es: "Tienda outlet" } },
+                    { name: { pt: "Agência", en: "Travel Agency", es: "Agencia" }, icon: "palmtree", q: { pt: "Agência de Viagens", en: "Travel Agency", es: "Agencia de viajes" } },
+                    { name: { pt: "Bicicletaria", en: "Bike Shop", es: "Bicicletería" }, icon: "bike", q: { pt: "Bicicletaria", en: "Bike Shop", es: "Tienda de bicicletas" } },
+                    { name: { pt: "Cinema", en: "Cinema", es: "Cine" }, icon: "film", q: { pt: "Cinema", en: "Movie theater", es: "Cine" } },
                     { name: { pt: "Galeria", en: "Gallery", es: "Galería" }, icon: "layout-grid", q: { pt: "Galeria Comercial", en: "Shopping Gallery", es: "Galería comercial" } },
                     { name: { pt: "Hotel", en: "Hotel", es: "Hotel" }, icon: "hotel", q: { pt: "Hotel", en: "Hotel", es: "Hotel" } },
-                    { name: { pt: "Agência", en: "Travel Agency", es: "Agencia" }, icon: "palmtree", q: { pt: "Agência de Viagens", en: "Travel Agency", es: "Agencia de viajes" } },
-                    { name: { pt: "Cinema", en: "Cinema", es: "Cine" }, icon: "film", q: { pt: "Cinema", en: "Movie theater", es: "Cine" } },
-                    { name: { pt: "Teatro", en: "Theater", es: "Teatro" }, icon: "ticket", q: { pt: "Teatro", en: "Theater", es: "Teatro" } },
+                    { name: { pt: "Outlet", en: "Outlet", es: "Outlet" }, icon: "tag", q: { pt: "Outlet", en: "Outlet store", es: "Tienda outlet" } },
                     { name: { pt: "Parque", en: "Park", es: "Parque" }, icon: "trees", q: { pt: "Parque", en: "Public park", es: "Parque" } },
-                    { name: { pt: "Bicicletaria", en: "Bike Shop", es: "Bicicletería" }, icon: "bike", q: { pt: "Bicicletaria", en: "Bike Shop", es: "Tienda de bicicletas" } }
+                    { name: { pt: "Shopping", en: "Mall", es: "Centro Comercial" }, icon: "shopping-bag", q: { pt: "Shopping Center", en: "Shopping Mall", es: "Centro comercial" } },
+                    { name: { pt: "Teatro", en: "Theater", es: "Teatro" }, icon: "ticket", q: { pt: "Teatro", en: "Theater", es: "Teatro" } }
                 ]
             },
             {
                 id: "trans", icon: "bus", class: "group-trans",
                 labels: { pt: "Transporte & Logística", en: "Transport & Logistics", es: "Transporte y Logística" },
                 items: [
-                    { name: { pt: "Ônibus", en: "Bus", es: "Autobús" }, icon: "bus", q: { pt: "Ponto de Ônibus", en: "Bus Stop", es: "Parada de autobús" } },
+                    { name: { pt: "Carga", en: "Freight", es: "Carga" }, icon: "truck", q: { pt: "Transportadora", en: "Shipping Company", es: "Empresa de transporte" } },
                     { name: { pt: "Estacionamento", en: "Parking", es: "Parking" }, icon: "parking-circle", q: { pt: "Estacionamento", en: "Parking Lot", es: "Aparcamiento" } },
+                    { name: { pt: "Ônibus", en: "Bus", es: "Autobús" }, icon: "bus", q: { pt: "Ponto de Ônibus", en: "Bus Stop", es: "Parada de autobús" } },
                     { name: { pt: "Posto Gas", en: "Gas Station", es: "Gasolinera" }, icon: "fuel", q: { pt: "Posto de Combustível", en: "Gas Station", es: "Gasolinera" } },
-                    { name: { pt: "Táxi / Uber", en: "Taxi / Uber", es: "Taxi / Uber" }, icon: "car", q: { pt: "Ponto de Táxi", en: "Taxi Stand", es: "Parada de taxis" } },
-                    { name: { pt: "Carga", en: "Freight", es: "Carga" }, icon: "truck", q: { pt: "Transportadora", en: "Shipping Company", es: "Empresa de transporte" } }
+                    { name: { pt: "Táxi / Uber", en: "Taxi / Uber", es: "Taxi / Uber" }, icon: "car", q: { pt: "Ponto de Táxi", en: "Taxi Stand", es: "Parada de taxis" } }
                 ]
             },
             {
                 id: "pet", icon: "dog", class: "group-pet",
                 labels: { pt: "Mundo Pet & Agro", en: "Pet & Agro World", es: "Mundo Pet y Agro" },
                 items: [
-                    { name: { pt: "Veterinário", en: "Vet", es: "Veterinario" }, icon: "heart-pulse", q: { pt: "Clínica Veterinária", en: "Veterinary Clinic", es: "Clínica veterinaria" } },
-                    { name: { pt: "Pet Shop", en: "Pet Shop", es: "Pet Shop" }, icon: "shopping-bag", q: { pt: "Pet Shop", en: "Pet Shop", es: "Tienda de mascotas" } },
                     { name: { pt: "Agropecuária", en: "Agro Store", es: "Agropecuaria" }, icon: "wheat", q: { pt: "Agropecuária", en: "Agriculture Store", es: "Tienda agropecuaria" } },
+                    { name: { pt: "Banho/Tosa", en: "Grooming", es: "Peluquería" }, icon: "bath", q: { pt: "Banho e Tosa", en: "Pet Grooming", es: "Peluquería canina" } },
+                    { name: { pt: "Pet Shop", en: "Pet Shop", es: "Pet Shop" }, icon: "shopping-bag", q: { pt: "Pet Shop", en: "Pet Shop", es: "Tienda de mascotas" } },
                     { name: { pt: "Rações", en: "Pet Food", es: "Piensos" }, icon: "dog", q: { pt: "Casa de Rações", en: "Pet Food Store", es: "Tienda de alimentos para mascotas" } },
-                    { name: { pt: "Banho/Tosa", en: "Grooming", es: "Peluquería" }, icon: "bath", q: { pt: "Banho e Tosa", en: "Pet Grooming", es: "Peluquería canina" } }
+                    { name: { pt: "Veterinário", en: "Vet", es: "Veterinario" }, icon: "heart-pulse", q: { pt: "Clínica Veterinária", en: "Veterinary Clinic", es: "Clínica veterinaria" } }
                 ]
             },
             {
                 id: "auto", icon: "car-front", class: "group-auto",
                 labels: { pt: "Automotivo", en: "Automotive", es: "Automotriz" },
                 items: [
+                    { name: { pt: "Auto Center", en: "Auto Center", es: "Auto Center" }, icon: "wrench", q: { pt: "Auto Center", en: "Auto Center", es: "Centro automotriz" } },
+                    { name: { pt: "Auto Elétrica", en: "Auto Electric", es: "Auto Elétrica" }, icon: "zap", q: { pt: "Auto Elétrica", en: "Auto Electrician", es: "Electricista automotriz" } },
+                    { name: { pt: "Auto Peças", en: "Auto Parts", es: "Repuestos" }, icon: "package", q: { pt: "Loja de Auto Peças", en: "Auto Parts Store", es: "Tienda de repuestos" } },
+                    { name: { pt: "Auto Vidros", en: "Auto Glass", es: "Lunas" }, icon: "scan", q: { pt: "Loja de Auto Vidros", en: "Auto Glass Shop", es: "Taller de lunas" } },
+                    { name: { pt: "Baterias", en: "Batteries", es: "Baterías" }, icon: "battery-charging", q: { pt: "Loja de Baterias Automotivas", en: "Car Battery Shop", es: "Tienda de baterias" } },
+                    { name: { pt: "Borracharia", en: "Tire Shop", es: "Vulcanizadora" }, icon: "car-front", q: { pt: "Borracharia", en: "Tire Repair Shop", es: "Taller de neumáticos" } },
+                    { name: { pt: "Concessionária", en: "Dealership", es: "Concesionaria" }, icon: "car-front", q: { pt: "Concessionária de Veículos", en: "Car Dealership", es: "Concesionario de coches" } },
+                    { name: { pt: "Funilaria", en: "Body Shop", es: "Chapa y Pintura" }, icon: "hammer", q: { pt: "Oficina de Funilaria e Pintura", en: "Body and Paint Shop", es: "Taller de chapa y pintura" } },
+                    { name: { pt: "Guincho", en: "Towing", es: "Grúa" }, icon: "truck", q: { pt: "Guincho 24h", en: "Towing Service", es: "Grúa 24h" } },
+                    { name: { pt: "Moto Peças", en: "Motorcycle Parts", es: "Repuestos Motos" }, icon: "package", q: { pt: "Loja de Moto Peças", en: "Motorcycle Parts Store", es: "Tienda de repuestos para motos" } },
                     { name: { pt: "Oficina", en: "Repair Shop", es: "Taller" }, icon: "settings", q: { pt: "Oficina Mecânica", en: "Auto Repair Shop", es: "Taller mecánico" } },
                     { name: { pt: "Oficina Motos", en: "Motorcycle Repair", es: "Taller de Motos" }, icon: "wrench", q: { pt: "Oficina de Motos", en: "Motorcycle Repair Shop", es: "Taller de motos" } },
-                    { name: { pt: "Moto Peças", en: "Motorcycle Parts", es: "Repuestos Motos" }, icon: "package", q: { pt: "Loja de Moto Peças", en: "Motorcycle Parts Store", es: "Tienda de repuestos para motos" } },
-                    { name: { pt: "Auto Center", en: "Auto Center", es: "Auto Center" }, icon: "wrench", q: { pt: "Auto Center", en: "Auto Center", es: "Centro automotriz" } },
-                    { name: { pt: "Auto Peças", en: "Auto Parts", es: "Repuestos" }, icon: "package", q: { pt: "Loja de Auto Peças", en: "Auto Parts Store", es: "Tienda de repuestos" } },
                     { name: { pt: "Pneus Carro/Moto", en: "Tires Car/Moto", es: "Neumáticos" }, icon: "circle-dot", q: { pt: "Loja de Pneus", en: "Tire Shop", es: "Tienda de neumáticos" } },
-                    { name: { pt: "Borracharia", en: "Tire Shop", es: "Vulcanizadora" }, icon: "car-front", q: { pt: "Borracharia", en: "Tire Repair Shop", es: "Taller de neumáticos" } },
-                    { name: { pt: "Auto Elétrica", en: "Auto Electric", es: "Auto Eléctrica" }, icon: "zap", q: { pt: "Auto Elétrica", en: "Auto Electrician", es: "Electricista automotriz" } },
-                    { name: { pt: "Auto Vidros", en: "Auto Glass", es: "Lunas" }, icon: "scan", q: { pt: "Loja de Auto Vidros", en: "Auto Glass Shop", es: "Taller de lunas" } },
-                    { name: { pt: "Funilaria", en: "Body Shop", es: "Chapa y Pintura" }, icon: "hammer", q: { pt: "Oficina de Funilaria e Pintura", en: "Body and Paint Shop", es: "Taller de chapa y pintura" } },
-                    { name: { pt: "Som & Acess.", en: "Car Audio", es: "Sonido y Acc." }, icon: "speaker", q: { pt: "Loja de Som e Acessórios Automotivos", en: "Car Audio Shop", es: "Tienda de sonido para coches" } },
-                    { name: { pt: "Baterias", en: "Batteries", es: "Baterías" }, icon: "battery-charging", q: { pt: "Loja de Baterias Automotivas", en: "Car Battery Shop", es: "Tienda de baterías" } }
+                    { name: { pt: "Posto 24h", en: "24h Gas Station", es: "Gasol. 24h" }, icon: "clock-3", q: { pt: "Posto de Combustível 24h", en: "24h Gas Station", es: "Gasolinera 24h" } },
+                    { name: { pt: "Posto Gas", en: "Gas Station", es: "Gasolinera" }, icon: "fuel", q: { pt: "Posto de Combustível", en: "Gas Station", es: "Gasolinera" } },
+                    { name: { pt: "Som & Acess.", en: "Car Audio", es: "Sonido y Acc." }, icon: "speaker", q: { pt: "Loja de Som e Acessórios Automotivos", en: "Car Audio Shop", es: "Tienda de sonido para coches" } }
                 ]
             },
             {
                 id: "tec", icon: "cpu", class: "group-tech",
                 labels: { pt: "Tecnologia", en: "Technology", es: "Tecnología" },
                 items: [
-                    { name: { pt: "Loja Celular", en: "Phone Store", es: "Móviles" }, icon: "smartphone", q: { pt: "Loja de Celular", en: "Phone Store", es: "Tienda de móviles" } },
-                    { name: { pt: "Informática", en: "IT Store", es: "Informática" }, icon: "monitor", q: { pt: "Loja de Informática", en: "Computer Store", es: "Tienda de informática" } },
                     { name: { pt: "Assistência", en: "Tech Support", es: "Soporte" }, icon: "wrench", q: { pt: "Assistência Técnica Informática", en: "IT Support Service", es: "Soporte técnico" } },
                     { name: { pt: "Eletro", en: "Electronics", es: "Electrónica" }, icon: "tv", q: { pt: "Loja de Eletrônicos", en: "Electronics Store", es: "Tienda de electrónica" } },
-                    { name: { pt: "Games", en: "Games", es: "Videojuegos" }, icon: "gamepad-2", q: { pt: "Loja de Games", en: "Video Game Store", es: "Tienda de videojuegos" } }
+                    { name: { pt: "Games", en: "Games", es: "Videojuegos" }, icon: "gamepad-2", q: { pt: "Loja de Games", en: "Video Game Store", es: "Tienda de videojuegos" } },
+                    { name: { pt: "Informática", en: "IT Store", es: "Informática" }, icon: "monitor", q: { pt: "Loja de Informática", en: "Computer Store", es: "Tienda de informática" } },
+                    { name: { pt: "Loja Celular", en: "Phone Store", es: "Móviles" }, icon: "smartphone", q: { pt: "Loja de Celular", en: "Phone Store", es: "Tienda de móviles" } }
                 ]
             },
             {
@@ -556,10 +583,10 @@
                 id: "casa", icon: "home", class: "group-casa",
                 labels: { pt: "Casa & Reforma", en: "Home & Renovation", es: "Hogar y Reforma" },
                 items: [
-                    { name: { pt: "Móveis", en: "Furniture", es: "Muebles" }, icon: "armchair", q: { pt: "Loja de Móveis", en: "Furniture Store", es: "Tienda de muebles" } },
-                    { name: { pt: "Ferragens", en: "Hardware", es: "Ferretería" }, icon: "hammer", q: { pt: "Ferragens", en: "Hardware Store", es: "Ferretería" } },
                     { name: { pt: "Construção", en: "Construction", es: "Construcción" }, icon: "blocks", q: { pt: "Material de Construção", en: "Construction Supply", es: "Materiales de construcción" } },
+                    { name: { pt: "Ferragens", en: "Hardware", es: "Ferretería" }, icon: "hammer", q: { pt: "Ferragens", en: "Hardware Store", es: "Ferretería" } },
                     { name: { pt: "Imobiliária", en: "Real Estate", es: "Inmobiliaria" }, icon: "building-2", q: { pt: "Imobiliária", en: "Real Estate Agency", es: "Agencia inmobiliaria" } },
+                    { name: { pt: "Móveis", en: "Furniture", es: "Muebles" }, icon: "armchair", q: { pt: "Loja de Móveis", en: "Furniture Store", es: "Tienda de muebles" } },
                     { name: { pt: "Tintas", en: "Paint", es: "Pinturas" }, icon: "paint-bucket", q: { pt: "Loja de Tintas", en: "Paint Store", es: "Tienda de pinturas" } }
                 ]
             },
@@ -568,21 +595,21 @@
                 labels: { pt: "Cuidados Pessoais", en: "Personal Care", es: "Cuidado Personal" },
                 items: [
                     { name: { pt: "Barbearia", en: "Barbershop", es: "Barbería" }, icon: "scissors", q: { pt: "Barbearia", en: "Barbershop", es: "Barbería" } },
-                    { name: { pt: "Salão", en: "Beauty Salon", es: "Salón" }, icon: "sparkles", q: { pt: "Salão de Beleza", en: "Beauty Salon", es: "Salón de belleza" } },
                     { name: { pt: "Esmalteria", en: "Nail Salon", es: "Uñas" }, icon: "brush", q: { pt: "Esmalteria", en: "Nail Salon", es: "Salón de uñas" } },
-                    { name: { pt: "Estética", en: "Esthetics", es: "Estética" }, icon: "wand-2", q: { pt: "Clínica de Estética", en: "Esthetics Clinic", es: "Clínica de estética" } }
+                    { name: { pt: "Estética", en: "Esthetics", es: "Estética" }, icon: "wand-2", q: { pt: "Clínica de Estética", en: "Esthetics Clinic", es: "Clínica de estética" } },
+                    { name: { pt: "Salão", en: "Beauty Salon", es: "Salón" }, icon: "sparkles", q: { pt: "Salão de Beleza", en: "Beauty Salon", es: "Salón de belleza" } }
                 ]
             },
             {
                 id: "comu", icon: "users", class: "group-comu",
                 labels: { pt: "Comunidade & Fé", en: "Community & Faith", es: "Comunidad y Fe" },
                 items: [
+                    { name: { pt: "Centro Espírita", en: "Spiritist Center", es: "Centro Espírita" }, icon: "sun", q: { pt: "Centro Espírita", en: "Spiritist Center", es: "Centro Espírita" } },
+                    { name: { pt: "Comunidade", en: "Community Center", es: "Centro Comunitario" }, icon: "users-2", q: { pt: "Centro Comunitário", en: "Community Center", es: "Centro comunitario" } },
                     { name: { pt: "Igreja", en: "Church", es: "Iglesia" }, icon: "church", q: { pt: "Igreja", en: "Church", es: "Iglesia" } },
-                    { name: { pt: "Templo", en: "Temple", es: "Templo" }, icon: "landmark", q: { pt: "Templo", en: "Temple", es: "Templo" } },
                     { name: { pt: "Igreja Católica", en: "Catholic Church", es: "Iglesia Católica" }, icon: "cross", q: { pt: "Igreja Católica", en: "Catholic Church", es: "Iglesia Católica" } },
                     { name: { pt: "Igreja Evang.", en: "Evangelical Church", es: "Iglesia Evangélica" }, icon: "music", q: { pt: "Igreja Evangélica", en: "Evangelical Church", es: "Iglesia Evangélica" } },
-                    { name: { pt: "Centro Espírita", en: "Spiritist Center", es: "Centro Espírita" }, icon: "sun", q: { pt: "Centro Espírita", en: "Spiritist Center", es: "Centro Espírita" } },
-                    { name: { pt: "Comunidade", en: "Community Center", es: "Centro Comunitario" }, icon: "users-2", q: { pt: "Centro Comunitário", en: "Community Center", es: "Centro comunitario" } }
+                    { name: { pt: "Templo", en: "Temple", es: "Templo" }, icon: "landmark", q: { pt: "Templo", en: "Temple", es: "Templo" } }
                 ]
             }
         ];
