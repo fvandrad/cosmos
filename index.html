@@ -40,14 +40,28 @@
         }
 
         header {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&q=80&w=1200');
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)),
+                url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80&w=2000');
             background-size: cover;
             background-position: center;
-            padding: 40px 16px;
+            padding: 60px 16px;
             color: #fff;
             text-align: center;
             border-bottom: none;
             position: relative;
+            overflow: hidden;
+        }
+
+        /* Adicionando um efeito de brilho sutil no fundo */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(0, 113, 227, 0.15) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .header-content {
@@ -58,7 +72,7 @@
         }
 
         h1 {
-            font-size: 38px;
+            font-size: 42px;
             font-weight: 800;
             margin-bottom: 24px;
             letter-spacing: -1.5px;
@@ -67,11 +81,12 @@
         }
 
         h1 span {
-            background: linear-gradient(135deg, #fff 0%, #0071e3 100%);
+            background: linear-gradient(135deg, #fff 0%, #7c3aed 50%, #0071e3 100%);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
             display: inline-block;
+            filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.3));
         }
 
         .search-container {
@@ -407,6 +422,8 @@
 
     <header>
         <div class="header-content">
+            <img src="logo.svg" alt="Cosmos Logo"
+                style="width: 80px; height: 80px; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(124, 58, 237, 0.5));">
             <h1>Tudo <span>Perto de Mim</span></h1>
             <div class="search-container">
                 <i data-lucide="search"></i>
@@ -493,9 +510,7 @@
                 items: [
                     { name: { pt: "Advogado", en: "Lawyer", es: "Abogado" }, icon: "scale", q: { pt: "Escritório de Advocacia", en: "Law Firm", es: "Despacho de abogados" } },
                     { name: { pt: "Banco", en: "Bank", es: "Banco" }, icon: "landmark", q: { pt: "Banco 24h", en: "Bank ATM", es: "Banco 24h" } },
-                    { name: { pt: "Cartório", en: "Notary", es: "Notaría" }, icon: "file-signature", q: { pt: "Cartório", en: "Notary Public", es: "Notaría" } },
                     { name: { pt: "Chaveiro", en: "Locksmith", es: "Cerrajero" }, icon: "key", q: { pt: "Chaveiro", en: "Locksmith", es: "Cerrajero" } },
-                    { name: { pt: "Correios", en: "Post Office", es: "Correos" }, icon: "mail", q: { pt: "Correios", en: "Post Office", es: "Oficina de correos" } },
                     { name: { pt: "Lotérica", en: "Lottery", es: "Lotería" }, icon: "clover", q: { pt: "Lotérica", en: "Lottery Shop", es: "Lotería" } }
                 ]
             },
@@ -505,11 +520,18 @@
                 items: [
                     { name: { pt: "Agência", en: "Travel Agency", es: "Agencia" }, icon: "palmtree", q: { pt: "Agência de Viagens", en: "Travel Agency", es: "Agencia de viajes" } },
                     { name: { pt: "Bicicletaria", en: "Bike Shop", es: "Bicicletería" }, icon: "bike", q: { pt: "Bicicletaria", en: "Bike Shop", es: "Tienda de bicicletas" } },
+                    { name: { pt: "Brechós", en: "Thrift Stores", es: "Tiendas de segunda mano" }, icon: "tag", q: { pt: "Brechó", en: "Thrift Store", es: "Brechó" } },
+                    { name: { pt: "Casa e Pesca", en: "Hunting & Fishing", es: "Caza y Pesca" }, icon: "fish", q: { pt: "Loja de Casa e Pesca", en: "Hunting and Fishing Store", es: "Tienda de Caza y Pesca" } },
                     { name: { pt: "Cinema", en: "Cinema", es: "Cine" }, icon: "film", q: { pt: "Cinema", en: "Movie theater", es: "Cine" } },
                     { name: { pt: "Galeria", en: "Gallery", es: "Galería" }, icon: "layout-grid", q: { pt: "Galeria Comercial", en: "Shopping Gallery", es: "Galería comercial" } },
                     { name: { pt: "Hotel", en: "Hotel", es: "Hotel" }, icon: "hotel", q: { pt: "Hotel", en: "Hotel", es: "Hotel" } },
+                    { name: { pt: "Loja de Tênis", en: "Sneaker Store", es: "Tienda de Tenis" }, icon: "footprints", q: { pt: "Loja de Tênis", en: "Sneaker Store", es: "Tienda de calzado deportivo" } },
+                    { name: { pt: "Lojas Físicas", en: "Physical Stores", es: "Tiendas Físicas" }, icon: "store", q: { pt: "Lojas Físicas", en: "Physical Stores", es: "Tiendas Físicas" } },
+                    { name: { pt: "Lojas Online", en: "Online Stores", es: "Tiendas Online" }, icon: "globe", q: { pt: "Lojas Online", en: "Online Stores", es: "Tiendas Online" } },
                     { name: { pt: "Outlet", en: "Outlet", es: "Outlet" }, icon: "tag", q: { pt: "Outlet", en: "Outlet store", es: "Tienda outlet" } },
                     { name: { pt: "Parque", en: "Park", es: "Parque" }, icon: "trees", q: { pt: "Parque", en: "Public park", es: "Parque" } },
+                    { name: { pt: "Pesqueiro", en: "Fishing Spots", es: "Pesqueiros" }, icon: "anchor", q: { pt: "Pesqueiro", en: "Fishing Spot", es: "Pesqueiro" } },
+                    { name: { pt: "Sapataria", en: "Shoe Store", es: "Zapatería" }, icon: "footprints", q: { pt: "Sapataria", en: "Shoe Store", es: "Zapatería" } },
                     { name: { pt: "Shopping", en: "Mall", es: "Centro Comercial" }, icon: "shopping-bag", q: { pt: "Shopping Center", en: "Shopping Mall", es: "Centro comercial" } },
                     { name: { pt: "Teatro", en: "Theater", es: "Teatro" }, icon: "ticket", q: { pt: "Teatro", en: "Theater", es: "Teatro" } }
                 ]
@@ -574,6 +596,8 @@
                 labels: { pt: "Educação", en: "Education", es: "Educación" },
                 items: [
                     { name: { pt: "Escola", en: "School", es: "Escuela" }, icon: "school", q: { pt: "Escola", en: "School", es: "Escuela" } },
+                    { name: { pt: "Escola de Arte", en: "Art School", es: "Escuela de Arte" }, icon: "palette", q: { pt: "Escola de Arte", en: "Art School", es: "Escuela de Arte" } },
+                    { name: { pt: "Escola de Música", en: "Music School", es: "Escuela de Música" }, icon: "music", q: { pt: "Escola de Música", en: "Music School", es: "Escuela de Música" } },
                     { name: { pt: "Faculdade", en: "College", es: "Facultad" }, icon: "book", q: { pt: "Faculdade", en: "College", es: "Facultad" } },
                     { name: { pt: "Idiomas", en: "Languages", es: "Idiomas" }, icon: "languages", q: { pt: "Curso de Idiomas", en: "Language School", es: "Escuela de idiomas" } },
                     { name: { pt: "Técnico", en: "Technical", es: "Técnico" }, icon: "graduation-cap", q: { pt: "Curso Técnico", en: "Technical Course", es: "Curso técnico" } },
@@ -612,6 +636,75 @@
                     { name: { pt: "Igreja Evang.", en: "Evangelical Church", es: "Iglesia Evangélica" }, icon: "music", q: { pt: "Igreja Evangélica", en: "Evangelical Church", es: "Iglesia Evangélica" } },
                     { name: { pt: "ONG", en: "NGO", es: "ONG" }, icon: "heart-handshake", q: { pt: "ONG", en: "NGO", es: "ONG" } },
                     { name: { pt: "Templo", en: "Temple", es: "Templo" }, icon: "landmark", q: { pt: "Templo", en: "Temple", es: "Templo" } }
+                ]
+            },
+            {
+                id: "emerg", icon: "shield-alert", class: "group-saude",
+                labels: { pt: "Emergências", en: "Emergency Services", es: "Emergencias" },
+                items: [
+                    { name: { pt: "Bombeiros (193)", en: "Firefighters (193)", es: "Bomberos (193)" }, icon: "flame", q: { pt: "Corpo de Bombeiros", en: "Fire Department", es: "Cuerpo de Bomberos" } },
+                    { name: { pt: "Defesa Civil (199)", en: "Civil Defense (199)", es: "Defensa Civil (199)" }, icon: "life-buoy", q: { pt: "Defesa Civil", en: "Civil Defense", es: "Defensa Civil" } },
+                    { name: { pt: "Polícia Civil", en: "Civil Police", es: "Policía Civil" }, icon: "search", q: { pt: "Delegacia de Polícia Civil", en: "Civil Police Station", es: "Comisaría de Policía Civil" } },
+                    { name: { pt: "Polícia Militar (190)", en: "Military Police (190)", es: "Policía Militar (190)" }, icon: "shield-check", q: { pt: "Polícia Militar", en: "Military Police", es: "Policía Militar" } },
+                    { name: { pt: "Polícia Rodoviária Estadual", en: "State Highway Police", es: "Policía Vial Estatal" }, icon: "traffic-cone", q: { pt: "Polícia Rodoviária Estadual", en: "State Highway Police", es: "Policía Vial Estatal" } },
+                    { name: { pt: "Polícia Rodoviária Federal", en: "Federal Highway Police", es: "Policía Federal de Caminos" }, icon: "truck", q: { pt: "Polícia Rodoviária Federal", en: "Federal Highway Police", es: "Policía Federal de Caminos" } },
+                    { name: { pt: "SAMU (192)", en: "SAMU (192)", es: "SAMU (192)" }, icon: "ambulance", q: { pt: "SAMU 192", en: "SAMU Emergency", es: "SAMU 192" } }
+                ]
+            },
+            {
+                id: "saudep", icon: "hospital", class: "group-saude",
+                labels: { pt: "Saúde Pública", en: "Public Health", es: "Salud Pública" },
+                items: [
+                    { name: { pt: "CAPS", en: "Psychosocial Care", es: "Atención Psicosocial" }, icon: "brain", q: { pt: "CAPS Centro de Atenção Psicossocial", en: "CAPS Health Center", es: "CAPS Centro Salud" } },
+                    { name: { pt: "Hospitais públicos", en: "Public Hospitals", es: "Hospitales públicos" }, icon: "hospital", q: { pt: "Hospital Público", en: "Public Hospital", es: "Hospital Público" } },
+                    { name: { pt: "Prontos-socorros", en: "Emergency Rooms", es: "Urgencias" }, icon: "ambulance", q: { pt: "Pronto-Socorro Público", en: "Public Emergency Room", es: "Urgencias Públicas" } },
+                    { name: { pt: "UBS", en: "Basic Health Units", es: "Centros de Salud" }, icon: "heart-pulse", q: { pt: "UBS Unidade Básica de Saúde", en: "Public Health Unit", es: "Centro de Salud" } },
+                    { name: { pt: "UPAs", en: "24h Care Units", es: "UPAs" }, icon: "clock", q: { pt: "UPA Unidade de Pronto Atendimento", en: "Emergency Care Unit", es: "UPA Urgencias" } },
+                    { name: { pt: "Vigilância Epidemiológica", en: "Epidemiological Surveillance", es: "Vigilancia Epidemiológica" }, icon: "microscope", q: { pt: "Vigilância Epidemiológica", en: "Epidemiological Surveillance", es: "Vigilancia Epidemiológica" } },
+                    { name: { pt: "Vigilância Sanitária", en: "Health Surveillance", es: "Vigilancia Sanitaria" }, icon: "clipboard-check", q: { pt: "Vigilância Sanitária", en: "Health Surveillance", es: "Vigilancia Sanitaria" } }
+                ]
+            },
+            {
+                id: "adminp", icon: "building-2", class: "group-serv",
+                labels: { pt: "Administração Pública", en: "Public Administration", es: "Administración Pública" },
+                items: [
+                    { name: { pt: "Assembleias Legislativas", en: "Legislative Assemblies", es: "Asambleas Legislativas" }, icon: "gavel", q: { pt: "Assembleia Legislativa", en: "Legislative Assembly", es: "Asamblea Legislativa" } },
+                    { name: { pt: "Câmaras Municipais", en: "City Councils", es: "Concejos Municipales" }, icon: "users", q: { pt: "Câmara Municipal", en: "City Council", es: "Concejo Municipal" } },
+                    { name: { pt: "Governo do Estado", en: "State Government", es: "Gobierno del Estado" }, icon: "landmark", q: { pt: "Palácio do Governo do Estado", en: "State Government Building", es: "Gobierno del Estado" } },
+                    { name: { pt: "Ouvidorias públicas", en: "Public Ombudsmen", es: "Defensorías del Pueblo" }, icon: "message-square", q: { pt: "Ouvidoria Pública", en: "Public Ombudsman", es: "Ouvidoria Pública" } },
+                    { name: { pt: "Prefeituras", en: "City Halls", es: "Ayuntamientos" }, icon: "building-2", q: { pt: "Prefeitura Municipal", en: "City Hall", es: "Ayuntamiento" } },
+                    { name: { pt: "Procon", en: "Consumer Protection", es: "Protección al Consumidor" }, icon: "hand-coins", q: { pt: "Procon", en: "Consumer Protection Office", es: "Oficina del Consumidor" } },
+                    { name: { pt: "Secretarias estaduais", en: "State Secretariats", es: "Secretarías Estadales" }, icon: "file-text", q: { pt: "Secretaria Estadual", en: "State Secretariat", es: "Secretaría Estadal" } },
+                    { name: { pt: "Secretarias municipais", en: "Municipal Secretariats", es: "Secretarías Municipales" }, icon: "file-text", q: { pt: "Secretaria Municipal", en: "Municipal Secretariat", es: "Secretaría Municipal" } }
+                ]
+            },
+            {
+                id: "justica", icon: "scale", class: "group-serv",
+                labels: { pt: "Justiça e Direitos", en: "Justice & Rights", es: "Justicia y Derechos" },
+                items: [
+                    { name: { pt: "Cartórios", en: "Notary Offices", es: "Notarías" }, icon: "file-signature", q: { pt: "Cartório", en: "Notary Office", es: "Notaría" } },
+                    { name: { pt: "Defensoria Pública", en: "Public Defender", es: "Defensoría Pública" }, icon: "help-circle", q: { pt: "Defensoria Pública", en: "Public Defender's Office", es: "Defensoría Pública" } },
+                    { name: { pt: "Fóruns", en: "Courthouses", es: "Juzgados" }, icon: "gavel", q: { pt: "Fórum de Justiça", en: "Courthouse", es: "Juzgado" } },
+                    { name: { pt: "Juizados Especiais", en: "Special Courts", es: "Juzgados Especiales" }, icon: "gavel", q: { pt: "Juizado Especial", en: "Special Court", es: "Juzgado Especial" } },
+                    { name: { pt: "Ministério Público", en: "Public Prosecutor", es: "Fiscalía" }, icon: "briefcase", q: { pt: "Ministério Público", en: "Public Prosecutor", es: "Ministerio Público" } },
+                    { name: { pt: "Tribunais de Justiça", en: "Courts of Justice", es: "Tribunales de Justicia" }, icon: "landmark", q: { pt: "Tribunal de Justiça", en: "Court of Justice", es: "Tribunal de Justicia" } }
+                ]
+            },
+            {
+                id: "assistencia", icon: "hand-heart", class: "group-serv",
+                labels: { pt: "Assistência Social", en: "Social Assistance", es: "Asistencia Social" },
+                items: [
+                    { name: { pt: "Abrigos públicos", en: "Public Shelters", es: "Albergues Públicos" }, icon: "home", q: { pt: "Abrigo Público", en: "Public Shelter", es: "Albergue Público" } },
+                    { name: { pt: "Conselhos Tutelares", en: "Guardianship Councils", es: "Consejos de Tutela" }, icon: "baby", q: { pt: "Conselho Tutelar", en: "Guardianship Council", es: "Consejo Tutelar" } },
+                    { name: { pt: "CRAS", en: "Social Assistance (CRAS)", es: "Asistencia Social (CRAS)" }, icon: "users-2", q: { pt: "CRAS Centro de Referência de Assistência Social", en: "CRAS Social Center", es: "CRAS Asistencia Social" } },
+                    { name: { pt: "CREAS", en: "Specialized Assist. (CREAS)", es: "Asistencia Espec. (CREAS)" }, icon: "users-2", q: { pt: "CREAS Centro de Referência Especializado", en: "CREAS Social Center", es: "CREAS Asistencia Social" } }
+                ]
+            },
+            {
+                id: "outros_pub", icon: "external-link", class: "group-serv",
+                labels: { pt: "Outros Serviços Públicos", en: "Other Public Services", es: "Otros Servicios Públicos" },
+                items: [
+                    { name: { pt: "Correios", en: "Post Office", es: "Correos" }, icon: "mail", q: { pt: "Correios", en: "Post Office", es: "Oficina de correos" } }
                 ]
             }
         ];
