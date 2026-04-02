@@ -76,17 +76,21 @@
             font-weight: 800;
             margin-bottom: 24px;
             letter-spacing: -1.5px;
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            text-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
             color: #fff;
+            line-height: 1.1;
         }
 
         h1 span {
-            background: linear-gradient(135deg, #fff 0%, #7c3aed 50%, #0071e3 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
             display: inline-block;
-            filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.3));
+            color: #fff;
+            padding: 6px 14px;
+            margin-top: 6px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.42), rgba(0, 113, 227, 0.42));
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(10px);
         }
 
         .search-container {
@@ -124,21 +128,17 @@
         /* Barra de Atahos Rápidos */
         .quick-jump-bar {
             display: flex;
-            overflow-x: auto;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 12px;
             padding: 16px 0 8px;
-            scrollbar-width: none;
-        }
-
-        .quick-jump-bar::-webkit-scrollbar {
-            display: none;
         }
 
         .jump-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-width: 75px;
+            width: 75px;
             background: none;
             border: none;
             cursor: pointer;
@@ -199,15 +199,9 @@
 
         .grid-categories {
             display: flex;
-            overflow-x: auto;
+            flex-wrap: wrap;
             gap: 12px;
             padding: 8px 0 16px;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .grid-categories::-webkit-scrollbar {
-            display: none;
         }
 
         .category-card {
@@ -223,13 +217,23 @@
             border: 1px solid rgba(0, 0, 0, 0.05);
             aspect-ratio: 1/1;
             overflow: hidden;
-            flex-shrink: 0;
+            flex: 0 0 140px;
         }
 
         @media (max-width: 600px) {
+            h1 {
+                font-size: 34px;
+                letter-spacing: -1px;
+            }
+
+            h1 span {
+                padding: 6px 12px;
+            }
+
             .category-card {
                 min-width: 120px;
                 max-width: 120px;
+                flex-basis: 120px;
             }
         }
 
